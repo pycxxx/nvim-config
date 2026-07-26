@@ -2,13 +2,13 @@ return {
   { "nvim-lua/plenary.nvim", lazy = true },
   { "nvim-tree/nvim-web-devicons", lazy = true },
 
-  -- colorscheme (pick anything; catppuccin is a sane default)
+  -- colorscheme
   {
-    "catppuccin/nvim",
-    name = "catppuccin",
+    "AlexvZyl/nordic.nvim",
+    lazy = false,
     priority = 1000,
     config = function()
-      vim.cmd.colorscheme("catppuccin-mocha")
+      vim.cmd.colorscheme("nordic")
     end,
   },
 
