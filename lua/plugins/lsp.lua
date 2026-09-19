@@ -46,19 +46,24 @@ return {
     config = function()
       local caps = require("cmp_nvim_lsp").default_capabilities()
 
-      local ensure_installed = { "ts_ls", "eslint", "pyright", "ruff" }
+      local servers = {
+        ts_ls = {},
+        eslint = {},
+        ruff = {},
+        pyright = require("config.lsp.pyright"),
+      }
       if vim.fn.executable("go") == 1 then
-        table.insert(ensure_installed, "gopls")
+        servers.gopls = {}
       end
 
       require("mason-lspconfig").setup({
-        ensure_installed = ensure_installed,
+        ensure_installed = vim.tbl_keys(servers),
       })
 
       local lsp = vim.lsp
-      -- servers with default setup + cmp capabilities
-      for _, server in ipairs({ "ts_ls", "eslint", "pyright", "ruff", "gopls" }) do
-        lsp.config(server, { capabilities = caps })
+      for server, custom_opts in pairs(servers) do
+        local opts = vim.tbl_deep_extend("force", { capabilities = caps }, custom_opts)
+        lsp.config(server, opts)
         lsp.enable(server)
       end
 
